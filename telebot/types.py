@@ -266,6 +266,9 @@ class Message(JsonDeserializable):
         if 'voice' in obj:
             opts['voice'] = Audio.de_json(obj['voice'])
             content_type = 'voice'
+        if 'video_note' in obj:
+            opts['video_note'] = VideoNote.de_json(obj['video_note'])
+            content_type = 'video_note'
         if 'caption' in obj:
             opts['caption'] = obj['caption']
         if 'contact' in obj:
@@ -506,6 +509,26 @@ class Video(JsonDeserializable):
         self.mime_type = mime_type
         self.file_size = file_size
 
+
+class VideoNote(JsonDeserializable):
+    @classmethod
+    def de_json(cls, json_string):
+        obj = cls.check_json(json_string)
+        file_id = obj['file_id']
+        duration = obj['duration']
+        length = obj['length']
+        thumb = None
+        if 'thumb' in obj:
+            thumb = PhotoSize.de_json(obj['thumb'])
+        file_size = obj['file_size']
+        return cls(file_id, duration, length, thumb, file_size)
+
+    def __init__(self, file_id, duration, length, thumb=None, file_size=None):
+        self.file_id = file_id
+        self.duration = duration
+        self.length = length
+        self.thumb = thumb
+        self.file_size = file_size
 
 class Contact(JsonDeserializable):
     @classmethod

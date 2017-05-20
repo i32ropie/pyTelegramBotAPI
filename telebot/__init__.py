@@ -411,7 +411,7 @@ class TeleBot:
 
     def delete_message(self, chat_id, message_id):
         """
-        Use this method to delete message. Returns True on success. 
+        Use this method to delete message. Returns True on success.
         :param chat_id: in which chat to delete
         :param message_id: which message to delete
         :return: API reply.
@@ -509,6 +509,12 @@ class TeleBot:
         return types.Message.de_json(
             apihelper.send_video(self.token, chat_id, data, duration, caption, reply_to_message_id, reply_markup,
                                  disable_notification, timeout))
+
+    def send_video_note(self, chat_id, video_note, duration=None, length=None, disable_notification=None,
+                        reply_to_message_id=None, reply_markup=None):
+        return types.Message.de_json(
+            apihelper.send_video_note(self.token, chat_id, video_note, duration, length, disable_notification,
+                                      reply_to_message_id, reply_markup))
 
     def send_location(self, chat_id, latitude, longitude, reply_to_message_id=None, reply_markup=None,
                       disable_notification=None):

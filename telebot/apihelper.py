@@ -304,6 +304,28 @@ def send_video(token, chat_id, data, duration=None, caption=None, reply_to_messa
     return _make_request(token, method_url, params=payload, files=files, method='post')
 
 
+def send_video_note(token, chat_id, video_note, duration=None, length=None, disable_notification=None,
+                    reply_to_message_id=None, reply_markup=None):
+    method_url = r'sendVideoNote'
+    payload = {'chat_id': chat_id}
+    files = None
+    if not util.is_string(video_note):
+        files = {'video_note': video_note}
+    else:
+        payload['video_note'] = video_note
+    if duration:
+        payload['duration'] = duration
+    if length:
+        payload['length'] = length
+    if reply_to_message_id:
+        payload['reply_to_message_id'] = reply_to_message_id
+    if reply_markup:
+        payload['reply_markup'] = _convert_markup(reply_markup)
+    if disable_notification:
+        payload['disable_notification'] = disable_notification
+    return _make_request(token, method_url, params=payload, files=files, method='post')
+
+
 def send_voice(token, chat_id, voice, caption=None, duration=None, reply_to_message_id=None, reply_markup=None,
                disable_notification=None, timeout=None):
     method_url = r'sendVoice'
@@ -525,7 +547,7 @@ def answer_callback_query(token, callback_query_id, text=None, show_alert=None, 
     """
     Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
     Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via BotFather and accept the terms. Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
-    
+
     :param token: Bot's token (you don't need to fill this)
     :param callback_query_id: Unique identifier for the query to be answered
     :param text: (Optional) Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters
